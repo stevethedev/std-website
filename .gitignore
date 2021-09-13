@@ -1,3 +1,7 @@
 # Ignore the IDE configuration files
 .idea
 *.iml
+
+# Ignore node temporary files
+node_modules
+build
