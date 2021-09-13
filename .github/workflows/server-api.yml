@@ -1,4 +1,4 @@
-name: Go
+name: Automated build checks
 
 on:
   push:
@@ -6,14 +6,14 @@ on:
   pull_request:
     branches: [ master ]
 
-defaults:
-  run:
-    working-directory: server-api
-
 jobs:
-
-  build:
+  build-server-api:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: server-api
+
     steps:
       - uses: actions/checkout@v2
 
@@ -27,3 +27,82 @@ jobs:
 
       - name: Test
         run: go test -v ./...
+
+  build-client-common:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: client-common
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
+  build-client-admin:
+    runs-on: ubuntu-latest
+
+    needs: [ 'build-client-common' ]
+
+    defaults:
+      run:
+        working-directory: client-admin
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+        working-directory: client-common
+      - run: npm run build
+        working-directory: client-common
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
+  build-client-public:
+    runs-on: ubuntu-latest
+
+    needs: [ 'build-client-common' ]
+
+    defaults:
+      run:
+        working-directory: client-public
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+        working-directory: client-common
+      - run: npm run build
+        working-directory: client-common
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
