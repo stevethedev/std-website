@@ -45,6 +45,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          cache-dependency-path: client-common/package-lock.json
           cache: 'npm'
       - run: npm ci
       - run: npm run build --if-present
@@ -69,6 +70,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          cache-dependency-path: client-admin/package-lock.json
           cache: 'npm'
       - run: npm ci
         working-directory: client-common
@@ -97,6 +99,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          cache-dependency-path: client-public/package-lock.json
           cache: 'npm'
       - run: npm ci
         working-directory: client-common
