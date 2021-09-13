@@ -1,0 +1,14 @@
+{
+  "name": "client-common",
+  "version": "1.0.0",
+  "description": "Shared files across the client applications.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Steven Jimenez"
+  },
+  "license": "MIT"
+}

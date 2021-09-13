@@ -1,0 +1,14 @@
+{
+  "name": "client-public",
+  "version": "1.0.0",
+  "description": "Client application for reading from the server",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Steven Jimenez"
+  },
+  "license": "MIT"
+}
