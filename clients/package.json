@@ -1,7 +1,7 @@
 {
-  "name": "client-common",
+  "name": "std-website-clients",
   "version": "1.0.0",
-  "description": "Shared files across the client applications.",
+  "description": "Steve the Dev Website Client.",
   "main": "index.js",
   "private": true,
   "scripts": {

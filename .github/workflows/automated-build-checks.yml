@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache-dependency-path: client-common/package-lock.json
+          cache-dependency-path: client/package-lock.json
           cache: 'npm'
 
       #########################################################################
@@ -48,37 +48,20 @@ jobs:
         working-directory: server-api
 
       #########################################################################
-      #                Check and Build the Common Client Files                #
+      #                   Check and Build the Client Files                    #
       #########################################################################
 
-      - run: npm ci
+      - name: Install Client Files
+        run: npm ci
+        working-directory: clients
+
+      - name: Test Client Files
+        run: npm test
+        working-directory: clients
+
+      - name: Build Client Files
+        run: npm run build
         working-directory: client-common
-      - run: npm test
-        working-directory: client-common
-      - run: npm run build
-        working-directory: client-common
-
-      #########################################################################
-      #                Check and Build the Admin Client Files                 #
-      #########################################################################
-
-      - run: npm ci
-        working-directory: client-admin
-      - run: npm test
-        working-directory: client-admin
-      - run: npm run build
-        working-directory: client-admin
-
-      #########################################################################
-      #                Check and Build the Public Client Files                #
-      #########################################################################
-
-      - run: npm ci
-        working-directory: client-public
-      - run: npm test
-        working-directory: client-public
-      - run: npm run build
-        working-directory: client-public
 
       #########################################################################
       #                              Post-Process                             #
