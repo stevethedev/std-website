@@ -40,11 +40,11 @@ jobs:
       #########################################################################
 
       - name: Test Server
-        run: go test -v ./...
+        run: bash scripts/test.sh
         working-directory: server-api
 
       - name: Build Server
-        run: go build -v ./...
+        run: bash scripts/build.sh
         working-directory: server-api
 
       #########################################################################

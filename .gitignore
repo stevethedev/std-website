@@ -1,4 +1,5 @@
 # Ignore the IDE configuration files
+.GOPATH
 .idea
 *.iml
 
