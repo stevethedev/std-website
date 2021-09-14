@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache-dependency-path: client/package-lock.json
+          cache-dependency-path: clients/package-lock.json
           cache: 'npm'
 
       #########################################################################
@@ -61,7 +61,7 @@ jobs:
 
       - name: Build Client Files
         run: npm run build
-        working-directory: client-common
+        working-directory: clients
 
       #########################################################################
       #                              Post-Process                             #
