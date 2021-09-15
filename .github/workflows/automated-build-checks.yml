@@ -1,0 +1,74 @@
+name: Automated build checks
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        go-version: [1.17]
+
+    steps:
+      #########################################################################
+      #                         Setup the environment                         #
+      #########################################################################
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache-dependency-path: clients/package-lock.json
+          cache: 'npm'
+
+      #########################################################################
+      #                    Check and Build the Server API                     #
+      #########################################################################
+
+      - name: Test Server
+        run: bash scripts/test.sh
+        working-directory: server-api
+
+      - name: Build Server
+        run: bash scripts/build.sh
+        working-directory: server-api
+
+      #########################################################################
+      #                   Check and Build the Client Files                    #
+      #########################################################################
+
+      - name: Install Client Files
+        run: npm ci
+        working-directory: clients
+
+      - name: Test Client Files
+        run: npm test
+        working-directory: clients
+
+      - name: Build Client Files
+        run: npm run build
+        working-directory: clients
+
+      #########################################################################
+      #                              Post-Process                             #
+      #########################################################################
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
