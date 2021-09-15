@@ -1,1 +1,1 @@
-console.log("Hello, world");
+export { main } from '../common/index';
