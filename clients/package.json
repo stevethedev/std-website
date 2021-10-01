@@ -5,22 +5,73 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "test": "jest"
+    "build": "ts-node fuse",
+    "test": "jest",
+    "lint": "eslint 'src/**/*.{ts,tsx}'"
   },
   "author": {
     "name": "Steven Jimenez"
   },
   "license": "MIT",
   "devDependencies": {
+    "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.25.2",
+    "fuse-box": "^4.0.1-next.8",
     "jest": "^27.2.0",
+    "prettier": "^2.4.1",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1",
     "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "type-fest": "^2.3.4",
     "typescript": "^4.4.3"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react",
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "sort-imports": [
+        "error",
+        {
+          "ignoreDeclarationSort": true
+        }
+      ],
+      "@typescript-eslint/consistent-type-imports": "error"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    }
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "rootDir": "src",
     "collectCoverage": true,
     "coverageDirectory": "../coverage",
@@ -32,5 +83,11 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "@types/react": "^17.0.21",
+    "@types/react-dom": "^17.0.9",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
