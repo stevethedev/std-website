@@ -4,6 +4,7 @@
 *.iml
 
 # Ignore node temporary files
+.cache
 node_modules
 build
 coverage
