@@ -2,25 +2,37 @@ version: "3.3"
 
 services:
   web-nginx:
-    image: nginx
+    container_name: web-nginx
+    image: nginx:mainline-alpine
     volumes:
-      - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/templates:/etc/nginx/templates:ro
+      - ../clients/build/client-admin:/app/client-admin:ro
+      - ../clients/build/client-public:/app/client-public:ro
     ports:
-      - 8080:80
+      - '8080:80'
     environment:
       NGINX_PORT: 80
+
+      NGINX_ADMIN_HOST: admin.localhost
+      NGINX_ADMIN_ROOT: /app/client-admin
+
+      NGINX_CLIENT_HOST: client.localhost
+      NGINX_CLIENT_ROOT: /app/client-public
+
       NGINX_SERVER_API_HOST: api.localhost
-      NGINX_SERVER_API_PROXY: 172.17.0.1:3000
-      NGINX_SWAGGER_SERVER_API_HOST: swagger.localhost
-      NGINX_SWAGGER_SERVER_API_PROXY: 172.17.0.1:8089
+      NGINX_SERVER_API_PROXY: "http://172.17.0.1:3000"
+
+      NGINX_SWAGGER_HOST: swagger.localhost
+      NGINX_SWAGGER_PROXY: "http://172.17.0.1:8089"
 
   server-api-swagger:
+    container_name: server-api-swagger
     image: swaggerapi/swagger-ui
     expose:
       - 8089
     ports:
-      - 8089:8080
+      - "8089:8080"
     volumes:
-      - ./swagger:/app
+      - ./swagger:/app:ro
     environment:
       SWAGGER_JSON: /app/swagger.yml

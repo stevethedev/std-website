@@ -1,0 +1,41 @@
+server {
+  listen       ${NGINX_PORT};
+  server_name  ${NGINX_SERVER_API_HOST};
+
+  location / {
+    proxy_pass  ${NGINX_SERVER_API_PROXY};
+  }
+}
+
+server {
+  listen       ${NGINX_PORT};
+  server_name  ${NGINX_SWAGGER_HOST};
+
+  location / {
+    proxy_pass  ${NGINX_SWAGGER_PROXY};
+  }
+}
+
+server {
+  listen       ${NGINX_PORT};
+  server_name  ${NGINX_CLIENT_HOST};
+  root         ${NGINX_CLIENT_ROOT};
+  index        index.html;
+
+  location / {
+    index      index.html;
+    try_files  $uri $uri/ /index.html?$query_string;
+  }
+}
+
+server {
+  listen       ${NGINX_PORT};
+  server_name  ${NGINX_ADMIN_HOST};
+  root         ${NGINX_ADMIN_ROOT};
+  index        index.html;
+
+  location / {
+    index      index.html;
+    try_files  $uri $uri/ /index.html?$query_string;
+  }
+}
