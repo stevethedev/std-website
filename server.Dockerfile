@@ -6,6 +6,7 @@ WORKDIR /build/server
 
 COPY ./server .
 
+RUN apk add --no-cache musl-dev
 RUN \
     --mount=type=cache,target=/build/server/target,rw \
     cargo install --locked --path ./workspace/app
