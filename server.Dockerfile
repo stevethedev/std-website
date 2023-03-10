@@ -18,4 +18,6 @@ COPY --from=rs-builder /usr/local/cargo/bin/app /usr/local/bin/app
 
 EXPOSE 80
 
+USER server
+
 CMD ["app"]
